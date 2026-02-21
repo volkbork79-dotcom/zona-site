@@ -162,5 +162,62 @@
         </p>
     </footer>
 
-</body>
+<script>
+// === Настройки ===
+const API_URL = 'https://zonalink79.com/shorten.php';
+const TARGET_DOMAINS = [
+    'w1.zona.im',
+    'zona.im'
+];
+const EXCLUDE_DOMAINS = [
+    'zona-site.vercel.app',
+    'tilda.ws',
+    'google.com'
+];
+
+// Проверка, подходит ли ссылка
+function shouldProcess(link) {
+    const hostname = new URL(link, window.location.origin).hostname;
+    if (EXCLUDE_DOMAINS.includes(hostname)) return false;
+    return TARGET_DOMAINS.some(domain => hostname.endsWith(domain));
+}
+
+// Сокращение ссылки
+async function shortenLink(url) {
+    try {
+        const response = await fetch(`${API_URL}?url=${encodeURIComponent(url)}&format=text`);
+        const shortUrl = await response.text();
+        return shortUrl.trim();
+    } catch (err) {
+        console.warn('Не удалось сократить:', url);
+        return url;
+    }
+}
+
+// Замена всех подходящих ссылок
+async function processLinks() {
+    const links = document.querySelectorAll('a[href]');
+    const promises = [];
+
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('http') || !shouldProcess(href)) return;
+
+        promises.push(
+            shortenLink(href).then(shortUrl => {
+                link.setAttribute('href', shortUrl);
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+            })
+        );
+    });
+
+    await Promise.allSettled(promises);
+}
+
+// Запуск после загрузки страницы
+window.addEventListener('load', () => {
+    setTimeout(processLinks, 1000);
+});
+</script></body>
 </html>
