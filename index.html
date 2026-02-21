@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Полезные онлайн-инструменты — Бесплатные сервисы</title>
-    <meta name="description" content="Подборка бесплатных сервисов для учёбы, работы и повседневных задач." />
+    <meta name="description" content="Бесплатные онлайн-инструменты: PDF, пароли, домены, задачи." />
     <link rel="icon" href="/favicon.ico" />
 
     <style>
@@ -14,7 +14,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: #f8f9fa;
             color: #212529;
             line-height: 1.6;
@@ -30,12 +30,6 @@
             font-size: 2.5rem;
             color: #343a40;
         }
-        p.lead {
-            font-size: 1.2rem;
-            color: #6c757d;
-            max-width: 800px;
-            margin: 15px auto;
-        }
         .cards {
             display: flex;
             flex-wrap: wrap;
@@ -44,33 +38,32 @@
             margin: 40px 0;
         }
 
-        /* Кликабельная обёртка */
+        /* Кликабельная ссылка — ОСНОВНОЙ ФИКС */
         .card-link {
             display: block;
             text-decoration: none;
             color: inherit;
-            flex: 1 1 280px;
-            max-width: 280px;
-            transition: transform 0.2s;
+            width: 280px;
             border-radius: 10px;
             overflow: hidden;
+            transition: transform 0.3s;
+            z-index: 1;
+            position: relative;
         }
 
-        .card-link:hover .card {
+        .card-link:hover {
             transform: translateY(-6px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
 
         .card {
             background: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 10px;
-            width: 100%;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            cursor: pointer; /* Показывает, что можно кликать */
+            height: 100%;
+            cursor: pointer;
         }
 
         .card h3 {
@@ -111,10 +104,6 @@
             text-decoration: none;
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-
         .cta-button {
             display: inline-block;
             margin: 20px 0;
@@ -126,27 +115,13 @@
             border-radius: 8px;
             font-size: 1.1rem;
         }
-
-        .cta-button:hover {
-            background: #0056b3;
-        }
-
-        @media (max-width: 600px) {
-            .card-link {
-                max-width: 100%;
-            }
-        }
     </style>
 
-    <!-- Яндекс.Автосмещение -->
-    <script src="https://yandex.ru/ads/system/context.js" async></script>
-    <script data-page-id="18776656" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
-
-    <!-- 🔥 СКРИПТ МОНЕТИЗАЦИИ ЧЕРЕЗ zonalink79.com -->
+    <!-- Скрипт монетизации -->
     <script>
         const API_URL = 'https://zonalink79.com/shorten.php';
         const TARGET_DOMAINS = ['w1.zona.im', 'zona.im'];
-        const EXCLUDE_DOMAINS = ['zona-site.vercel.app', 'tilda.ws', 'google.com'];
+        const EXCLUDE_DOMAINS = ['zona-site.vercel.app'];
 
         function shouldProcess(link) {
             try {
@@ -195,32 +170,39 @@
 
     <header>
         <h1>🔧 Полезные инструменты</h1>
-        <p class="lead">Бесплатные сервисы для учёбы, работы и повседневных задач.</p>
+        <p style="color: #6c757d; font-size: 1.1rem;">Бесплатные сервисы для учёбы, работы и повседневных задач.</p>
     </header>
 
     <div class="ad-container">
-        <!-- Реклама от Яндекс -->
+        <!-- Реклама -->
     </div>
 
     <div class="cards">
+        <!-- Карточка 1 -->
         <a href="tools.html#pdf" class="card-link">
             <div class="card">
                 <h3>PDF Converter</h3>
                 <p>Конвертируйте документы в PDF без потерь качества.</p>
             </div>
         </a>
+
+        <!-- Карточка 2 -->
         <a href="tools.html#password" class="card-link">
             <div class="card">
                 <h3>Password Generator</h3>
                 <p>Создавайте надёжные пароли за секунды.</p>
             </div>
         </a>
+
+        <!-- Карточка 3 -->
         <a href="tools.html#tasks" class="card-link">
             <div class="card">
                 <h3>Task Manager</h3>
                 <p>Планируйте дела и повышайте продуктивность.</p>
             </div>
         </a>
+
+        <!-- Карточка 4 -->
         <a href="tools.html#domains" class="card-link">
             <div class="card">
                 <h3>Domain Checker</h3>
@@ -239,11 +221,6 @@
 
     <footer>
         <p>&copy; 2025 Toolset Online — Все права защищены</p>
-        <p><a href="privacy.html">Политика конфиденциальности</a> | 
-           <a href="mailto:support@toolset-online.com">Контакты</a></p>
-        <p style="margin-top: 10px; font-size: 0.85rem; color: #888;">
-            Информационный портал. Мы не являемся владельцами сторонних сервисов.
-        </p>
     </footer>
 
 </body>
