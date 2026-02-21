@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Дополнительные ресурсы</title>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Инструменты — Toolset Online</title>
+    <meta name="description" content="Онлайн-инструменты для работы и учёбы." />
+    <link rel="icon" href="/favicon.ico" />
+
     <style>
         * {
             margin: 0;
@@ -11,118 +14,166 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f8f9fa;
-            color: #333;
+            color: #212529;
             line-height: 1.6;
-            padding: 60px 20px;
+            padding: 40px 20px;
             max-width: 1000px;
             margin: 0 auto;
+        }
+        header {
             text-align: center;
+            margin-bottom: 40px;
         }
         h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: #343a40;
         }
-        p.lead {
-            font-size: 1.1rem;
-            color: #6c757d;
-            max-width: 700px;
-            margin: 15px auto;
-        }
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 40px 0;
-        }
-        .card {
-            background: white;
-            border: 1px solid #ddd;
+        .tool-section {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
             border-radius: 10px;
-            width: 250px;
-            padding: 20px;
+            padding: 30px;
+            margin: 30px 0;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
-        .card h3 {
-            font-size: 1.3rem;
-            color: #495057;
-            margin: 10px 0;
+        .tool-section h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
         }
-        .card p {
-            font-size: 0.95rem;
+        .tool-section p {
             color: #6c757d;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
         }
-        /* Кнопка перехода */
         .cta-button {
             display: inline-block;
-            margin: 40px 0;
-            padding: 16px 32px;
-            background: #28a745;
+            margin-top: 20px;
+            padding: 14px 28px;
+            background: #007bff;
             color: white !important;
             text-decoration: none;
             font-weight: bold;
             border-radius: 8px;
-            font-size: 1.2rem;
-            transition: background 0.3s;
+            font-size: 1.1rem;
         }
         .cta-button:hover {
-            background: #218838;
+            background: #0056b3;
         }
-        /* Ссылка назад */
-        .back-link {
-            display: block;
-            margin: 20px 0;
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        footer a {
             color: #007bff;
             text-decoration: none;
-            font-size: 1rem;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 30px 0;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1rem;
         }
         .back-link:hover {
             text-decoration: underline;
         }
-        /* Подвал */
-        footer {
-            margin-top: 80px;
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
     </style>
+
+    <!-- 🔥 ТОТ ЖЕ СКРИПТ МОНЕТИЗАЦИИ -->
+    <script>
+        const API_URL = 'https://zonalink79.com/shorten.php';
+        const TARGET_DOMAINS = ['w1.zona.im', 'zona.im'];
+        const EXCLUDE_DOMAINS = ['zona-site.vercel.app'];
+
+        function shouldProcess(link) {
+            try {
+                const hostname = new URL(link, window.location.origin).hostname;
+                if (EXCLUDE_DOMAINS.includes(hostname)) return false;
+                return TARGET_DOMAINS.some(domain => hostname.endsWith(domain));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        async function shortenLink(url) {
+            try {
+                const response = await fetch(`${API_URL}?url=${encodeURIComponent(url)}&format=text`);
+                const shortUrl = await response.text();
+                return shortUrl.trim();
+            } catch (err) {
+                console.warn('Не удалось сократить:', url);
+                return url;
+            }
+        }
+
+        async function processLinks() {
+            const links = document.querySelectorAll('a[href]');
+            const promises = [];
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('http') || !shouldProcess(href)) return;
+                promises.push(
+                    shortenLink(href).then(shortUrl => {
+                        link.setAttribute('href', shortUrl);
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                    })
+                );
+            });
+            await Promise.allSettled(promises);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(processLinks, 1000);
+        });
+    </script>
 </head>
 <body>
-    <h1>🔧 Полезные инструменты</h1>
-    <p class="lead">Бесплатные сервисы для учёбы, работы и повседневных задач.</p>
 
-    <div class="cards">
-        <div class="card">
-            <h3>PDF Converter</h3>
-            <p>Конвертируйте документы в PDF и обратно.</p>
-        </div>
-        <div class="card">
-            <h3>Password Generator</h3>
-            <p>Создавайте надёжные пароли за секунды.</p>
-        </div>
-        <div class="card">
-            <h3>Domain Checker</h3>
-            <p>Проверьте доступность доменного имени.</p>
-        </div>
-        <div class="card">
-            <h3>Task Manager</h3>
-            <p>Планируйте дела и повышайте продуктивность.</p>
-        </div>
+    <header>
+        <h1>🛠️ Инструменты</h1>
+        <p style="color: #6c757d; font-size: 1.1rem;">Выберите нужный сервис</p>
+    </header>
+
+    <a href="index.html" class="back-link">← Вернуться на главную</a>
+
+    <div class="tool-section" id="pdf">
+        <h2>📄 PDF Converter</h2>
+        <p>Конвертируйте DOC, JPG и другие форматы в PDF без потерь качества.</p>
+        <a href="https://w1.zona.im/pdf-converter" class="cta-button">Открыть PDF Converter</a>
     </div>
 
-    <!-- 🔗 КНОПКА ПЕРЕХОДА НА ВАШ САЙТ -->
-    <a href="https://w1.zona.im/" target="_blank" class="cta-button">
-        Открыть дополнительные ресурсы
-    </a>
+    <div class="tool-section" id="password">
+        <h2>🔐 Генератор паролей</h2>
+        <p>Создавайте надёжные пароли длиной до 64 символов с числами, буквами и спецсимволами.</p>
+        <a href="https://w1.zona.im/password-generator" class="cta-button">Открыть генератор</a>
+    </div>
 
-    <!-- Ссылка назад -->
-    <a href="/" class="back-link">← На главную</a>
+    <div class="tool-section" id="tasks">
+        <h2>📅 Органайзер задач</h2>
+        <p>Планируйте дела на день, неделю или месяц. Работает без регистрации.</p>
+        <a href="https://w1.zona.im/task-organizer" class="cta-button">Открыть органайзер</a>
+    </div>
 
-    <!-- Подвал -->
+    <div class="tool-section" id="domains">
+        <h2>🔍 Поиск доменов</h2>
+        <p>Проверьте, свободен ли нужный вам домен: .com, .ru, .net и другие зоны.</p>
+        <a href="https://w1.zona.im/domain-checker" class="cta-button">Проверить домен</a>
+    </div>
+
     <footer>
-        &copy; 2025 Zona Site — Все права защищены
+        <p>&copy; 2025 Toolset Online — Все права защищены</p>
+        <p><a href="privacy.html">Политика конфиденциальности</a></p>
     </footer>
+
 </body>
 </html>
