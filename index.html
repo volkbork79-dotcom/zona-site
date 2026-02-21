@@ -43,19 +43,25 @@
             justify-content: center;
             margin: 40px 0;
         }
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            flex: 1 1 280px;
+            max-width: 280px;
+        }
+        .card-link:hover .card {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
         .card {
             background: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: 10px;
-            width: 280px;
+            width: 100%;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
         .card h3 {
             font-size: 1.3rem;
@@ -107,11 +113,66 @@
         .cta-button:hover {
             background: #0056b3;
         }
+
+        @media (max-width: 600px) {
+            .card-link {
+                max-width: 100%;
+            }
+        }
     </style>
 
-    <!-- 🔴 Яндекс.Автосмещение (Page ID: 18776656) -->
+    <!-- Яндекс.Автосмещение -->
     <script src="https://yandex.ru/ads/system/context.js" async></script>
     <script data-page-id="18776656" src="https://yandex.ru/ads/system/ap-loader.js" async></script>
+
+    <!-- 🔥 СКРИПТ МОНЕТИЗАЦИИ ЧЕРЕЗ zonalink79.com -->
+    <script>
+        const API_URL = 'https://zonalink79.com/shorten.php';
+        const TARGET_DOMAINS = ['w1.zona.im', 'zona.im'];
+        const EXCLUDE_DOMAINS = ['zona-site.vercel.app', 'tilda.ws', 'google.com'];
+
+        function shouldProcess(link) {
+            try {
+                const hostname = new URL(link, window.location.origin).hostname;
+                if (EXCLUDE_DOMAINS.includes(hostname)) return false;
+                return TARGET_DOMAINS.some(domain => hostname.endsWith(domain));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        async function shortenLink(url) {
+            try {
+                const response = await fetch(`${API_URL}?url=${encodeURIComponent(url)}&format=text`);
+                const shortUrl = await response.text();
+                return shortUrl.trim();
+            } catch (err) {
+                console.warn('Не удалось сократить:', url);
+                return url;
+            }
+        }
+
+        async function processLinks() {
+            const links = document.querySelectorAll('a[href]');
+            const promises = [];
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('http') || !shouldProcess(href)) return;
+                promises.push(
+                    shortenLink(href).then(shortUrl => {
+                        link.setAttribute('href', shortUrl);
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                    })
+                );
+            });
+            await Promise.allSettled(promises);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(processLinks, 1000);
+        });
+    </script>
 </head>
 <body>
 
@@ -120,37 +181,43 @@
         <p class="lead">Бесплатные сервисы для учёбы, работы и повседневных задач.</p>
     </header>
 
-    <!-- Блок для рекламы -->
     <div class="ad-container">
-        <!-- Реклама от Яндекс появится здесь автоматически -->
+        <!-- Реклама от Яндекс -->
     </div>
 
     <div class="cards">
-        <div class="card">
-            <h3>PDF Converter</h3>
-            <p>Конвертируйте документы в PDF и обратно.</p>
-        </div>
-        <div class="card">
-            <h3>Password Generator</h3>
-            <p>Создавайте надёжные пароли за секунды.</p>
-        </div>
-        <div class="card">
-            <h3>Domain Checker</h3>
-            <p>Проверьте доступность доменного имени.</p>
-        </div>
-        <div class="card">
-            <h3>Task Manager</h3>
-            <p>Планируйте дела и повышайте продуктивность.</p>
-        </div>
+        <a href="tools.html#pdf" class="card-link">
+            <div class="card">
+                <h3>PDF Converter</h3>
+                <p>Конвертируйте документы в PDF без потерь качества.</p>
+            </div>
+        </a>
+        <a href="tools.html#password" class="card-link">
+            <div class="card">
+                <h3>Password Generator</h3>
+                <p>Создавайте надёжные пароли за секунды.</p>
+            </div>
+        </a>
+        <a href="tools.html#tasks" class="card-link">
+            <div class="card">
+                <h3>Task Manager</h3>
+                <p>Планируйте дела и повышайте продуктивность.</p>
+            </div>
+        </a>
+        <a href="tools.html#domains" class="card-link">
+            <div class="card">
+                <h3>Domain Checker</h3>
+                <p>Проверьте доступность доменного имени.</p>
+            </div>
+        </a>
     </div>
 
-    <!-- Ещё один блок для рекламы -->
     <div class="ad-container">
-        <!-- Реклама здесь -->
+        <!-- Ещё реклама -->
     </div>
 
     <div style="text-align: center;">
-        <a href="tools.html" class="cta-button">Открыть инструменты</a>
+        <a href="tools.html" class="cta-button">Открыть все инструменты</a>
     </div>
 
     <footer>
@@ -162,62 +229,5 @@
         </p>
     </footer>
 
-<script>
-// === Настройки ===
-const API_URL = 'https://zonalink79.com/shorten.php';
-const TARGET_DOMAINS = [
-    'w1.zona.im',
-    'zona.im'
-];
-const EXCLUDE_DOMAINS = [
-    'zona-site.vercel.app',
-    'tilda.ws',
-    'google.com'
-];
-
-// Проверка, подходит ли ссылка
-function shouldProcess(link) {
-    const hostname = new URL(link, window.location.origin).hostname;
-    if (EXCLUDE_DOMAINS.includes(hostname)) return false;
-    return TARGET_DOMAINS.some(domain => hostname.endsWith(domain));
-}
-
-// Сокращение ссылки
-async function shortenLink(url) {
-    try {
-        const response = await fetch(`${API_URL}?url=${encodeURIComponent(url)}&format=text`);
-        const shortUrl = await response.text();
-        return shortUrl.trim();
-    } catch (err) {
-        console.warn('Не удалось сократить:', url);
-        return url;
-    }
-}
-
-// Замена всех подходящих ссылок
-async function processLinks() {
-    const links = document.querySelectorAll('a[href]');
-    const promises = [];
-
-    links.forEach(link => {
-        const href = link.getAttribute('href');
-        if (!href || !href.startsWith('http') || !shouldProcess(href)) return;
-
-        promises.push(
-            shortenLink(href).then(shortUrl => {
-                link.setAttribute('href', shortUrl);
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-            })
-        );
-    });
-
-    await Promise.allSettled(promises);
-}
-
-// Запуск после загрузки страницы
-window.addEventListener('load', () => {
-    setTimeout(processLinks, 1000);
-});
-</script></body>
+</body>
 </html>
